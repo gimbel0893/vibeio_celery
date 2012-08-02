@@ -28,9 +28,9 @@ def create_application_version(bucket_name, key_name, application_name, version_
 def update_environment(version_label, environment_name):
     b = Beanstalk(aws_access_key_id=AWS_ACCESS_KEY, aws_secret_access_key=AWS_SECRET_KEY)
 
-    b.update_environment(
+    res = b.update_environment(
             environment_name = environment_name,
             version_label = version_label
         )
 
-    return True
+    return res

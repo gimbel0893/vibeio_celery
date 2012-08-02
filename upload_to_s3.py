@@ -26,4 +26,4 @@ def upload_to_s3(zip_file, bucket_name):
 
     shutil.rmtree(os.path.dirname(zip_file))
 
-    return (bucket, k)
+    return k.name
