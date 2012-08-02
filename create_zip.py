@@ -1,12 +1,15 @@
 import celery
+import tempfile
 import zipfile
 import os
+import shutil
 
 
 @celery.task()
 def create_zip(source_dir, zip_name, include_empty_dir=True):
+    zip_full_path += os.sep.join(tempfile.mkdtemp(), zip_name)
     empty_dirs = []
-    zip = zipfile.ZipFile(zip_name, 'w', zipfile.ZIP_DEFLATED)
+    zip = zipfile.ZipFile(zip_full_path, 'w', zipfile.ZIP_DEFLATED)
     root_len = len(os.path.abspath(source_dir))
 
     for root, dirs, files in os.walk(source_dir): 
@@ -27,3 +30,6 @@ def create_zip(source_dir, zip_name, include_empty_dir=True):
         empty_dirs = []
 
     zip.close()
+    shutil.rmtree(source_dir)
+
+    return zip_full_path
