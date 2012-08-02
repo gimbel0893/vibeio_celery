@@ -12,7 +12,7 @@ AWS_SECRET_KEY = settings.get('app:main', 'deployer.aws_secret_key')
 
 
 @celery.task
-def create_application_version(bucket_name, key_name, application_name, version_label):
+def create_application_version(key_name, bucket_name, application_name, version_label):
     b = Beanstalk(aws_access_key_id=AWS_ACCESS_KEY, aws_secret_access_key=AWS_SECRET_KEY)
 
     res = b.create_application_version(
@@ -22,7 +22,7 @@ def create_application_version(bucket_name, key_name, application_name, version_
             s3_key = key_name
         )
 
-    return res
+    return res.application_version.version_label
 
 @celery.task
 def update_environment(version_label, environment_name):
